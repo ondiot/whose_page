@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whose Page ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+<div id="app">
+
+  <!-- Shared logo: visible on name, create/join and lobby screens; hidden once the game starts -->
+  <header id="site-title">
+    <h1 class="title">
+      <img class="title-gif" src="assets/title.gif" alt="Papers.io" draggable="false">
+    </h1>
+  </header>
+
+  <div id="room-bar" class="hidden">
+    <span id="room-bar-code" class="code"></span>
+    <button id="btn-leave" class="secondary">Exit</button>
+  </div>
+
+  <div id="player-strip" class="hidden" aria-label="Players"></div>
+
+  <!-- NAME + AVATAR -->
+  <section id="screen-name" class="screen active">
+    <p class="subtitle">Write. Shuffle. Guess who wrote it.</p>
+
+    <div class="card">
+      <input id="input-name" maxlength="16" placeholder="Your name">
+
+      <div class="avatar-carousel">
+        <button id="avatar-prev" class="arrow-btn" type="button">◀</button>
+        <div id="avatar-preview" class="avatar-preview" role="img" aria-label="Selected avatar"></div>
+        <button id="avatar-next" class="arrow-btn" type="button">▶</button>
+      </div>
+
+      <button id="btn-continue">Continue</button>
+    </div>
+    <p id="name-error" class="error"></p>
+  </section>
+
+  <!-- CREATE OR JOIN -->
+  <section id="screen-mode" class="screen">
+    <h2>Hey <span id="mode-name"></span> <span id="mode-avatar" class="avatar-img" aria-label="avatar"></span></h2>
+
+    <div class="card">
+      <button id="btn-create">Create Room</button>
+
+      <div class="divider">or join a room</div>
+
+      <div class="row">
+        <input id="input-code" maxlength="6" placeholder="ROOM CODE">
+        <button id="btn-join">Join</button>
+      </div>
+
+      <div class="divider"></div>
+      <button id="btn-back-name" class="secondary">Back</button>
+    </div>
+    <p id="mode-error" class="error"></p>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="screen-lobby" class="screen">
+    <h2>Room <span id="lobby-code" class="code"></span></h2>
+    <ul id="lobby-players" class="player-list"></ul>
+
+    <div id="lobby-host-controls" class="hidden">
+      <label class="row">Round length:
+        <select id="select-seconds">
+          <option value="30">30s</option>
+          <option value="60" selected>60s</option>
+          <option value="90">90s</option>
+          <option value="120">120s</option>
+        </select>
+      </label>
+
+      <label class="toggle-row" for="toggle-extempore">
+        <span class="toggle-text">🎤 Extempore mode
+          <small>Everyone writes about the same fun topic each round</small>
+        </span>
+        <input type="checkbox" id="toggle-extempore" class="switch">
+      </label>
+
+      <div id="extempore-options" class="hidden">
+        <div class="row">
+          <input id="input-topic" maxlength="60" placeholder="Add your own topic (optional)">
+          <button id="btn-add-topic" type="button">Add</button>
+        </div>
+        <ul id="custom-topic-list" class="topic-list"></ul>
+        <p id="topic-error" class="error"></p>
+        <p class="hint">Your topics are used first, then fun built-in ones.</p>
+      </div>
+
+      <button id="btn-start">Start Game</button>
+    </div>
+    <p id="lobby-mode-note" class="hint"></p>
+    <p id="lobby-hint" class="hint"></p>
+  </section>
+
+  <!-- WRITING -->
+  <section id="screen-writing" class="screen">
+    <h2>Round <span id="write-round"></span></h2>
+    <div id="write-topic" class="topic-card hidden">
+      <span class="topic-label">Topic</span>
+      <span id="write-topic-text"></span>
+    </div>
+    <div id="write-timer" class="timer">60</div>
+    <textarea id="write-text" maxlength="300"
+      placeholder="Write anything — a confession, a lie, a weird fact. Someone will have to guess it's you."></textarea>
+    <button id="btn-submit-paper">Submit</button>
+    <p id="write-status" class="hint"></p>
+  </section>
+
+  <!-- GUESSING -->
+  <section id="screen-guessing" class="screen">
+    <h2>Whodunnit?</h2>
+    <p id="guess-topic" class="hint topic-line hidden"></p>
+    <p id="guess-progress" class="hint"></p>
+    <div id="guess-paper-text" class="paper"></div>
+    <div id="guess-player-grid" class="player-grid"></div>
+    <p id="guess-status" class="hint"></p>
+  </section>
+
+  <!-- REVEAL -->
+  <section id="screen-reveal" class="screen">
+    <h2>Results — Round <span id="reveal-round"></span></h2>
+    <p id="reveal-topic" class="hint topic-line hidden"></p>
+    <p id="reveal-counter" class="hint reveal-counter"></p>
+    <div class="reveal-carousel">
+      <button id="reveal-prev" class="arrow-btn" type="button" aria-label="Previous paper">◀</button>
+      <div id="reveal-list"></div>
+      <button id="reveal-next" class="arrow-btn" type="button" aria-label="Next paper">▶</button>
+    </div>
+    <div id="scoreboard" class="card"></div>
+    <div id="reveal-host-controls" class="hidden">
+      <button id="btn-next-round">Next Round</button>
+    </div>
+    <p id="reveal-hint" class="hint"></p>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module" src="js/game.js?v=5"></script>
+
+</body>
+</html>
